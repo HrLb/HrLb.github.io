@@ -9,10 +9,6 @@ var filesToCache = [
 /* Start the service worker and cache all of the app's content */
 self.addEventListener('install', function (e) {
 
-    navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
-        .then(device => { console.log("Succes"); })
-        .catch(error => { console.log("Error") });
-
     e.waitUntil(
         caches.open(cacheName).then(function (cache) {
             return cache.addAll(filesToCache);
@@ -28,11 +24,11 @@ self.addEventListener('install', function (e) {
 /* Serve cached content when offline */
 self.addEventListener('fetch', function (e) {
 
-    console.log("start");
+    document.getElementsById("myDebug").innerHTML += "<br> start";
     navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
         .then(device => { document.getElementById("message").innerHTML = "Succes 2"; })
         .catch(error => { document.getElementById("message").innerHTML = "Error 2"; });
-    console.log("done");
+        document.getElementsById("myDebug").innerHTML += "<br> done";
 
     e.respondWith(
         caches.match(e.request).then(function (response) {
