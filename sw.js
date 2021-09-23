@@ -10,8 +10,8 @@ var filesToCache = [
 self.addEventListener('install', function(e) {
 
     navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
-.then(device => { document.getElementById("message").innerHTML = "Succes"; })
-.catch(error => { document.getElementById("message").innerHTML = "Error"; });
+.then(device => { console.log("Succes"); })
+.catch(error => { console.log("Error") });
 
   e.waitUntil(
     caches.open(cacheName).then(function(cache) {
@@ -20,6 +20,16 @@ self.addEventListener('install', function(e) {
   );
   self.skipWaiting();
 });
+
+self.addEventListener('load', function(e) {
+console.log("start");
+    navigator.bluetooth.requestDevice({ filters: [{ services: ['battery_service'] }] })
+.then(device => { document.getElementById("message").innerHTML = "Succes"; })
+.catch(error => { document.getElementById("message").innerHTML = "Error"; });
+console.log("done");
+});
+
+
 
 /* Serve cached content when offline */
 self.addEventListener('fetch', function(e) {
